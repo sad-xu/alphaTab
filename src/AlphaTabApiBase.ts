@@ -106,7 +106,7 @@ export class AlphaTabApiBase<TSettings> {
         this.uiFacade = uiFacade;
         this.container = uiFacade.rootContainer;
 
-        uiFacade.initialize(this, settings);
+        uiFacade.initialize(this as any, settings);
         Logger.logLevel = this.settings.core.logLevel;
 
         this.canvasElement = uiFacade.createCanvasElement();

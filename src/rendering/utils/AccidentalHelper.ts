@@ -4,7 +4,7 @@ import { Beat } from '@src/model/Beat';
 import { Note } from '@src/model/Note';
 import { NoteAccidentalMode } from '@src/model/NoteAccidentalMode';
 import { ModelUtils } from '@src/model/ModelUtils';
-import { PercussionMapper } from '@src/model/PercussionMapper';
+// import { PercussionMapper } from '@src/model/PercussionMapper';
 import { ScoreBarRenderer } from '@src/rendering/ScoreBarRenderer';
 
 
@@ -113,7 +113,8 @@ export class AccidentalHelper {
         if (noteValue < bar.staff.track.percussionArticulations.length) {
             return bar.staff.track.percussionArticulations[noteValue]!.staffLine;
         } else {
-            return PercussionMapper.getArticulationByValue(noteValue)?.staffLine ?? 0;
+            return 0
+            // return PercussionMapper.getArticulationByValue(noteValue)?.staffLine ?? 0;
         }
     }
 
@@ -255,8 +256,8 @@ export class AccidentalHelper {
                         break;
                 }
 
-                // Issue #472: Tied notes across bars do not show the accidentals but also 
-                // do not register them. 
+                // Issue #472: Tied notes across bars do not show the accidentals but also
+                // do not register them.
                 // https://ultimatemusictheory.com/tied-notes-with-accidentals/
                 let skipAccidental = false;
                 if (note && note.isTieDestination && note.beat.index === 0) {

@@ -1,4 +1,4 @@
-import { AlphaTabApiBase } from '@src/AlphaTabApiBase';
+import { AlphaTabApiBaseLite } from '@src/AlphaTabApiBaseLite';
 import { EventEmitter, IEventEmitterOfT, IEventEmitter, EventEmitterOfT } from '@src/EventEmitter';
 import { JsonConverter } from '@src/model/JsonConverter';
 import { Score } from '@src/model/Score';
@@ -14,13 +14,13 @@ import { Environment } from '@src/Environment';
  * @target web
  */
 export class AlphaTabWorkerScoreRenderer<T> implements IScoreRenderer {
-    private _api: AlphaTabApiBase<T>;
+    private _api: AlphaTabApiBaseLite<T>;
     private _worker!: Worker;
     private _width: number = 0;
 
     public boundsLookup: BoundsLookup | null = null;
 
-    public constructor(api: AlphaTabApiBase<T>, settings: Settings) {
+    public constructor(api: AlphaTabApiBaseLite<T>, settings: Settings) {
         this._api = api;
 
         if (!settings.core.scriptFile) {

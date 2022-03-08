@@ -19,16 +19,16 @@ import { SpacingGlyph } from '@src/rendering/glyphs/SpacingGlyph';
 import { ScoreBarRenderer } from '@src/rendering/ScoreBarRenderer';
 import { NoteXPosition, NoteYPosition } from '@src/rendering/BarRendererBase';
 import { BeatBounds } from '@src/rendering/utils/BeatBounds';
-import { PercussionMapper } from '@src/model/PercussionMapper';
-import { PercussionNoteHeadGlyph } from '@src/rendering/glyphs/PercussionNoteHeadGlyph';
-import { Logger } from '@src/Logger';
+// import { PercussionMapper } from '@src/model/PercussionMapper';
+// import { PercussionNoteHeadGlyph } from '@src/rendering/glyphs/PercussionNoteHeadGlyph';
+// import { Logger } from '@src/Logger';
 import { ArticStaccatoAboveGlyph } from '@src/rendering/glyphs/ArticStaccatoAboveGlyph';
-import { MusicFontSymbol } from '@src/model/MusicFontSymbol';
-import { ICanvas, TextBaseline } from '@src/platform/ICanvas';
-import { PictEdgeOfCymbalGlyph } from '@src/rendering/glyphs/PictEdgeOfCymbalGlyph';
-import { PickStrokeGlyph } from '@src/rendering/glyphs/PickStrokeGlyph';
-import { PickStroke } from '@src/model/PickStroke';
-import { GuitarGolpeGlyph } from '@src/rendering/glyphs/GuitarGolpeGlyph';
+// import { MusicFontSymbol } from '@src/model/MusicFontSymbol';
+import { ICanvas } from '@src/platform/ICanvas'; // , TextBaseline
+// import { PictEdgeOfCymbalGlyph } from '@src/rendering/glyphs/PictEdgeOfCymbalGlyph';
+// import { PickStrokeGlyph } from '@src/rendering/glyphs/PickStrokeGlyph';
+// import { PickStroke } from '@src/model/PickStroke';
+// import { GuitarGolpeGlyph } from '@src/rendering/glyphs/GuitarGolpeGlyph';
 import { BeamingHelper } from '@src/rendering/utils/BeamingHelper';
 
 export class ScoreBeatGlyph extends BeatOnNoteGlyphBase {
@@ -137,8 +137,8 @@ export class ScoreBeatGlyph extends BeatOnNoteGlyphBase {
                 let line = Math.ceil((this.renderer.bar.staff.standardNotationLineCount - 1) / 2) * 2;
 
                 // this positioning is quite strange, for most staff line counts
-                // the whole/rest are aligned as half below the whole rest. 
-                // but for staff line count 1 and 3 they are aligned centered on the same line. 
+                // the whole/rest are aligned as half below the whole rest.
+                // but for staff line count 1 and 3 they are aligned centered on the same line.
                 if (
                     this.container.beat.duration === Duration.Whole &&
                     this.renderer.bar.staff.standardNotationLineCount !== 1 &&
@@ -199,17 +199,17 @@ export class ScoreBeatGlyph extends BeatOnNoteGlyphBase {
 
     private createNoteHeadGlyph(n: Note): EffectGlyph {
         let isGrace: boolean = this.container.beat.graceType !== GraceType.None;
-        if (n.beat.voice.bar.staff.isPercussion) {
-            const articulation = PercussionMapper.getArticulation(n);
-            if (articulation) {
-                return new PercussionNoteHeadGlyph(0, 0, articulation, n.beat.duration, isGrace);
-            } else {
-                Logger.warning(
-                    'Rendering',
-                    `No articulation found for percussion instrument ${n.percussionArticulation}`
-                );
-            }
-        }
+        // if (n.beat.voice.bar.staff.isPercussion) {
+        //     const articulation = PercussionMapper.getArticulation(n);
+        //     if (articulation) {
+        //         return new PercussionNoteHeadGlyph(0, 0, articulation, n.beat.duration, isGrace);
+        //     } else {
+        //         Logger.warning(
+        //             'Rendering',
+        //             `No articulation found for percussion instrument ${n.percussionArticulation}`
+        //         );
+        //     }
+        // }
         if (n.isDead) {
             return new DeadNoteHeadGlyph(0, 0, isGrace);
         }
@@ -255,32 +255,32 @@ export class ScoreBeatGlyph extends BeatOnNoteGlyphBase {
             this.noteHeads!.belowBeatEffects.set('HAccent', new AccentuationGlyph(0, 0, AccentuationType.Heavy));
         }
 
-        if (n.isPercussion) {
-            const articulation = PercussionMapper.getArticulation(n);
-            if (articulation && articulation.techniqueSymbolPlacement !== TextBaseline.Middle) {
-                const effectContainer =
-                    articulation.techniqueSymbolPlacement === TextBaseline.Top
-                        ? this.noteHeads!.aboveBeatEffects
-                        : this.noteHeads!.belowBeatEffects;
+        // if (n.isPercussion) {
+        //     const articulation = PercussionMapper.getArticulation(n);
+        //     if (articulation && articulation.techniqueSymbolPlacement !== TextBaseline.Middle) {
+        //         const effectContainer =
+        //             articulation.techniqueSymbolPlacement === TextBaseline.Top
+        //                 ? this.noteHeads!.aboveBeatEffects
+        //                 : this.noteHeads!.belowBeatEffects;
 
-                switch (articulation.techniqueSymbol) {
-                    case MusicFontSymbol.PictEdgeOfCymbal:
-                        effectContainer.set('PictEdgeOfCymbal', new PictEdgeOfCymbalGlyph(0, 0));
-                        break;
-                    case MusicFontSymbol.ArticStaccatoAbove:
-                        effectContainer.set('ArticStaccatoAbove', new ArticStaccatoAboveGlyph(0, 0));
-                        break;
-                    case MusicFontSymbol.StringsUpBow:
-                        effectContainer.set('StringsUpBow', new PickStrokeGlyph(0, 0, PickStroke.Up));
-                        break;
-                    case MusicFontSymbol.StringsDownBow:
-                        effectContainer.set('StringsDownBow', new PickStrokeGlyph(0, 0, PickStroke.Down));
-                        break;
-                    case MusicFontSymbol.GuitarGolpe:
-                        effectContainer.set('GuitarGolpe', new GuitarGolpeGlyph(0, 0));
-                        break;
-                }
-            }
-        }
+        //         switch (articulation.techniqueSymbol) {
+        //             case MusicFontSymbol.PictEdgeOfCymbal:
+        //                 effectContainer.set('PictEdgeOfCymbal', new PictEdgeOfCymbalGlyph(0, 0));
+        //                 break;
+        //             case MusicFontSymbol.ArticStaccatoAbove:
+        //                 effectContainer.set('ArticStaccatoAbove', new ArticStaccatoAboveGlyph(0, 0));
+        //                 break;
+        //             case MusicFontSymbol.StringsUpBow:
+        //                 effectContainer.set('StringsUpBow', new PickStrokeGlyph(0, 0, PickStroke.Up));
+        //                 break;
+        //             case MusicFontSymbol.StringsDownBow:
+        //                 effectContainer.set('StringsDownBow', new PickStrokeGlyph(0, 0, PickStroke.Down));
+        //                 break;
+        //             case MusicFontSymbol.GuitarGolpe:
+        //                 effectContainer.set('GuitarGolpe', new GuitarGolpeGlyph(0, 0));
+        //                 break;
+        //         }
+        //     }
+        // }
     }
 }

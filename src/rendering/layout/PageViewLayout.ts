@@ -64,7 +64,7 @@ export class PageViewLayout extends ScoreLayout {
         // 4. One result per StaveGroup
         y = this.layoutAndRenderScore(y);
 
-        y = this.layoutAndRenderAnnotation(y);
+        // y = this.layoutAndRenderAnnotation(y);
 
         this.height = y + this._pagePadding[3];
     }
@@ -98,7 +98,7 @@ export class PageViewLayout extends ScoreLayout {
         // 4. One result per StaveGroup
         y = this.resizeAndRenderScore(y, oldHeight);
 
-        y = this.layoutAndRenderAnnotation(y);
+        // y = this.layoutAndRenderAnnotation(y);
 
         this.height = y + this._pagePadding![3];
     }

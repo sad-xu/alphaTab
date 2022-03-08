@@ -1,15 +1,15 @@
 import { LayoutMode } from '@src/LayoutMode';
 import { StaveProfile } from '@src/StaveProfile';
 import { AlphaTexImporter } from '@src/importer/AlphaTexImporter';
-import { Gp3To5Importer } from '@src/importer/Gp3To5Importer';
-import { Gp7Importer } from '@src/importer/Gp7Importer';
-import { GpxImporter } from '@src/importer/GpxImporter';
-import { MusicXmlImporter } from '@src/importer/MusicXmlImporter';
+// import { Gp3To5Importer } from '@src/importer/Gp3To5Importer';
+// import { Gp7Importer } from '@src/importer/Gp7Importer';
+// import { GpxImporter } from '@src/importer/GpxImporter';
+// import { MusicXmlImporter } from '@src/importer/MusicXmlImporter';
 import { ScoreImporter } from '@src/importer/ScoreImporter';
 import { HarmonicType } from '@src/model/HarmonicType';
 import { ICanvas } from '@src/platform/ICanvas';
-import { AlphaSynthWebWorker } from '@src/platform/javascript/AlphaSynthWebWorker';
-import { AlphaTabWebWorker } from '@src/platform/javascript/AlphaTabWebWorker';
+// import { AlphaSynthWebWorker } from '@src/platform/javascript/AlphaSynthWebWorker';
+// import { AlphaTabWebWorker } from '@src/platform/javascript/AlphaTabWebWorker';
 import { Html5Canvas } from '@src/platform/javascript/Html5Canvas';
 import { JQueryAlphaTab } from '@src/platform/javascript/JQueryAlphaTab';
 import { CssFontSvgCanvas } from '@src/platform/svg/CssFontSvgCanvas';
@@ -51,11 +51,11 @@ import { TabBarRendererFactory } from '@src/rendering/TabBarRendererFactory';
 import { FontLoadingChecker } from '@src/util/FontLoadingChecker';
 import { Logger } from '@src/Logger';
 import { LeftHandTapEffectInfo } from '@src/rendering/effects/LeftHandTapEffectInfo';
-import { CapellaImporter } from '@src/importer/CapellaImporter';
+// import { CapellaImporter } from '@src/importer/CapellaImporter';
 import { ResizeObserverPolyfill } from '@src/platform/javascript/ResizeObserverPolyfill';
 import { WebPlatform } from '@src/platform/javascript/WebPlatform';
 import { IntersectionObserverPolyfill } from '@src/platform/javascript/IntersectionObserverPolyfill';
-import { AlphaSynthWebWorklet } from '@src/platform/javascript/AlphaSynthAudioWorkletOutput';
+// import { AlphaSynthWebWorklet } from '@src/platform/javascript/AlphaSynthAudioWorkletOutput';
 
 export class LayoutEngineFactory {
     public readonly vertical: boolean;
@@ -128,7 +128,7 @@ export class Environment {
             }
             .at-surface-svg text {
                 dominant-baseline: central;
-            }             
+            }
             .at {
                  font-family: 'alphaTab';
                  speak: none;
@@ -225,7 +225,7 @@ export class Environment {
             // WebPack currently requires this exact syntax: new Worker(new URL(..., import.meta.url)))
             // The module `@coderline/alphatab` will be resolved by WebPack to alphaTab consumed as library
             // this will not work with CDNs because worker start scripts need to have the same origin like
-            // the current browser. 
+            // the current browser.
 
             // https://github.com/webpack/webpack/discussions/14066
 
@@ -332,11 +332,11 @@ export class Environment {
      */
     public static buildImporters(): ScoreImporter[] {
         return [
-            new Gp3To5Importer(),
-            new GpxImporter(),
-            new Gp7Importer(),
-            new MusicXmlImporter(),
-            new CapellaImporter(),
+            null as any, // new Gp3To5Importer(),
+            null as any, // new GpxImporter(),
+            null as any, // new Gp7Importer(),
+            null as any, // new MusicXmlImporter(),
+            null as any, // new CapellaImporter(),
             new AlphaTexImporter()
         ];
     }
@@ -506,6 +506,7 @@ export class Environment {
                 return new HorizontalScreenLayout(r);
             })
         );
+
         return engines;
     }
 
@@ -514,11 +515,12 @@ export class Environment {
      * @partial
      */
     public static platformInit(): void {
-        if (Environment.isRunningInAudioWorklet) {
-            AlphaSynthWebWorklet.init();
-        } else if (Environment.isRunningInWorker) {
-            AlphaTabWebWorker.init();
-            AlphaSynthWebWorker.init();
+        // if (Environment.isRunningInAudioWorklet) {
+        //     AlphaSynthWebWorklet.init();
+        // } else
+        if (Environment.isRunningInWorker) {
+            // AlphaTabWebWorker.init();
+            // AlphaSynthWebWorker.init();
         } else if (
             Environment.webPlatform === WebPlatform.Browser ||
             Environment.webPlatform === WebPlatform.BrowserModule

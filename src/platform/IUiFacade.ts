@@ -1,5 +1,6 @@
-import { AlphaTabApiBase } from '@src/AlphaTabApiBase';
-import { IAlphaSynth } from '@src/synth/IAlphaSynth';
+// import { AlphaTabApiBase } from '@src/AlphaTabApiBase';
+import { AlphaTabApiBaseLite } from '@src/AlphaTabApiBaseLite';
+// import { IAlphaSynth } from '@src/synth/IAlphaSynth';
 import { IEventEmitter } from '@src/EventEmitter';
 import { Score } from '@src/model/Score';
 import { IContainer } from '@src/platform/IContainer';
@@ -40,7 +41,7 @@ export interface IUiFacade<TSettings> {
      * @param api The alphaTab API wrapper responsible for UI interaction.
      * @param settings The settings object holding the settings from the UI layer.
      */
-    initialize(api: AlphaTabApiBase<TSettings>, settings: TSettings): void;
+    initialize(api: AlphaTabApiBaseLite<TSettings>, settings: TSettings): void;
 
     /**
      * Tells the UI layer to destroy the alphaTab controls and restore the initial state.
@@ -69,7 +70,7 @@ export interface IUiFacade<TSettings> {
 
     /**
      * Tells the UI layer to append the given render results to the UI. At this point
-     * the partial result is not actually rendered yet, only the layouting process 
+     * the partial result is not actually rendered yet, only the layouting process
      * completed.
      * @param renderResults The rendered partial that should be added to the UI.
      */
@@ -91,7 +92,8 @@ export interface IUiFacade<TSettings> {
      * Tells the UI layer to create a player worker.
      * @returns
      */
-    createWorkerPlayer(): IAlphaSynth | null;
+    // createWorkerPlayer(): IAlphaSynth | null;
+    createWorkerPlayer(): any;
 
     /**
      * Creates the cursor objects that are used to highlight the currently played beats and bars.

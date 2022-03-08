@@ -1,4 +1,4 @@
-import { GeneralMidi } from '@src/midi/GeneralMidi';
+// import { GeneralMidi } from '@src/midi/GeneralMidi';
 import { ScoreImporter } from '@src/importer/ScoreImporter';
 import { UnsupportedFormatError } from '@src/importer/UnsupportedFormatError';
 import { AccentuationType } from '@src/model/AccentuationType';
@@ -752,8 +752,8 @@ export class AlphaTexImporter extends ScoreImporter {
                         this.error('instrument', AlphaTexSymbols.Number, false);
                     }
                 } else if (this._sy === AlphaTexSymbols.String) {
-                    let instrumentName: string = (this._syData as string).toLowerCase();
-                    this._currentTrack.playbackInfo.program = GeneralMidi.getValue(instrumentName);
+                    // let instrumentName: string = (this._syData as string).toLowerCase();
+                    // this._currentTrack.playbackInfo.program = GeneralMidi.getValue(instrumentName);
                 } else {
                     this.error('instrument', AlphaTexSymbols.Number, true);
                 }
@@ -1583,7 +1583,7 @@ export class AlphaTexImporter extends ScoreImporter {
                         }
                     }
                 }
-               
+
                 if (this._sy !== AlphaTexSymbols.RParensis) {
                     this.error('bend-effect', AlphaTexSymbols.RParensis, true);
                 }

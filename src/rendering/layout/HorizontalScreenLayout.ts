@@ -192,6 +192,6 @@ export class HorizontalScreenLayout extends ScoreLayout {
             currentBarIndex += partial.masterBars.length;
         }
 
-        this.height = this.layoutAndRenderAnnotation(this.height) + this._pagePadding[3];
+        this.height = this.height + this._pagePadding[3];
     }
 }

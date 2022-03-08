@@ -19,7 +19,7 @@ import { Lazy } from '@src/util/Lazy';
 import { Logger } from '@src/Logger';
 import { ModelUtils } from '@src/model/ModelUtils';
 import { PickStroke } from '@src/model/PickStroke';
-import { PercussionMapper } from '@src/model/PercussionMapper';
+// import { PercussionMapper } from '@src/model/PercussionMapper';
 
 class NoteIdBag {
     public tieDestinationNoteId: number = -1;
@@ -136,7 +136,7 @@ export class Note {
      * @deprecated
      */
     public get element(): number {
-        return this.isPercussion ? PercussionMapper.getElementAndVariation(this)[0] : -1;
+        return -1 // this.isPercussion ? PercussionMapper.getElementAndVariation(this)[0] : -1;
     }
 
     /**
@@ -144,7 +144,7 @@ export class Note {
      * @deprecated
      */
     public get variation(): number {
-        return this.isPercussion ? PercussionMapper.getElementAndVariation(this)[1] : -1;
+        return -1 // this.isPercussion ? PercussionMapper.getElementAndVariation(this)[1] : -1;
     }
 
     /**
@@ -396,7 +396,7 @@ export class Note {
     /**
      * Gets the desination of the tie.
      * @clone_ignore
-     * @json_ignore 
+     * @json_ignore
      */
     public tieDestination: Note | null = null;
 
@@ -957,7 +957,7 @@ export class Note {
 
     private _noteIdBag: NoteIdBag | null = null;
     public chain(sharedDataBag: Map<string, unknown>) {
-        // if we have some IDs from a serialization flow, 
+        // if we have some IDs from a serialization flow,
         // we need to lookup/register the notes correctly
         if (this._noteIdBag != null) {
             // get or create lookup
@@ -977,7 +977,7 @@ export class Note {
                 noteIdLookup.set(this.id, this);
             }
 
-            // on any effect destiniation, lookup the origin which should already be 
+            // on any effect destiniation, lookup the origin which should already be
             // registered
             if (this._noteIdBag.hammerPullOriginNoteId !== -1) {
                 this.hammerPullOrigin = noteIdLookup.get(this._noteIdBag.hammerPullOriginNoteId)!;

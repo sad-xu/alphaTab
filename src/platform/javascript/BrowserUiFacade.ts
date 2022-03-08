@@ -1,8 +1,8 @@
-import { AlphaTabApiBase } from '@src/AlphaTabApiBase';
-import { IAlphaSynth } from '@src/synth/IAlphaSynth';
+import { AlphaTabApiBaseLite } from '@src/AlphaTabApiBaseLite';
+// import { IAlphaSynth } from '@src/synth/IAlphaSynth';
 import { Environment } from '@src/Environment';
 import { EventEmitter, IEventEmitter } from '@src/EventEmitter';
-import { ScoreLoader } from '@src/importer/ScoreLoader';
+// import { ScoreLoader } from '@src/importer/ScoreLoader';
 import { Font } from '@src/model/Font';
 import { Score } from '@src/model/Score';
 import { NotationMode } from '@src/NotationSettings';
@@ -17,17 +17,17 @@ import { FontLoadingChecker } from '@src/util/FontLoadingChecker';
 import { Logger } from '@src/Logger';
 import { IMouseEventArgs } from '@src/platform/IMouseEventArgs';
 import { IUiFacade } from '@src/platform/IUiFacade';
-import { AlphaSynthScriptProcessorOutput } from '@src/platform/javascript/AlphaSynthScriptProcessorOutput';
-import { AlphaSynthWebWorkerApi } from '@src/platform/javascript/AlphaSynthWebWorkerApi';
-import { AlphaTabApi } from '@src/platform/javascript/AlphaTabApi';
+// import { AlphaSynthScriptProcessorOutput } from '@src/platform/javascript/AlphaSynthScriptProcessorOutput';
+// import { AlphaSynthWebWorkerApi } from '@src/platform/javascript/AlphaSynthWebWorkerApi';
+// import { AlphaTabApi } from '@src/platform/javascript/AlphaTabApi';
 import { AlphaTabWorkerScoreRenderer } from '@src/platform/javascript/AlphaTabWorkerScoreRenderer';
 import { BrowserMouseEventArgs } from '@src/platform/javascript/BrowserMouseEventArgs';
 import { Cursors } from '@src/platform/Cursors';
-import { JsonConverter } from '@src/model/JsonConverter';
+// import { JsonConverter } from '@src/model/JsonConverter';
 import { SettingsSerializer } from '@src/generated/SettingsSerializer';
 import { WebPlatform } from '@src/platform/javascript/WebPlatform';
 import { AlphaTabError, AlphaTabErrorType } from '@src/AlphaTabError';
-import { AlphaSynthAudioWorkletOutput } from '@src/platform/javascript/AlphaSynthAudioWorkletOutput';
+// import { AlphaSynthAudioWorkletOutput } from '@src/platform/javascript/AlphaSynthAudioWorkletOutput';
 
 /**
  * @target web
@@ -54,7 +54,7 @@ interface ResultPlaceholder extends HTMLElement {
  */
 export class BrowserUiFacade implements IUiFacade<unknown> {
     private _fontCheckers: Map<string, FontLoadingChecker> = new Map();
-    private _api!: AlphaTabApiBase<unknown>;
+    private _api!: AlphaTabApiBaseLite<unknown>;
     private _contents: string | null = null;
     private _file: string | null = null;
     private _totalResultCount: number = 0;
@@ -159,13 +159,18 @@ export class BrowserUiFacade implements IUiFacade<unknown> {
         return new AlphaTabWorkerScoreRenderer<unknown>(this._api, this._api.settings);
     }
 
-    public initialize(api: AlphaTabApiBase<unknown>, raw: any | Settings): void {
+    public initialize(api: AlphaTabApiBaseLite<unknown>, raw: any | Settings): void {
         this._api = api;
         let settings: Settings;
         if (raw instanceof Settings) {
             settings = raw;
         } else {
-            settings = JsonConverter.jsObjectToSettings(raw);
+            function jsObjectToSettings (jsObject: unknown): Settings {
+                let settings: Settings = new Settings();
+                SettingsSerializer.fromJson(settings, jsObject);
+                return settings;
+            }
+            settings = jsObjectToSettings(raw);
         }
 
         let dataAttributes: Map<string, unknown> = this.getDataAttributes();
@@ -257,39 +262,39 @@ export class BrowserUiFacade implements IUiFacade<unknown> {
             success(data);
             return true;
         }
-        if (data instanceof ArrayBuffer) {
-            let byteArray: Uint8Array = new Uint8Array(data);
-            success(ScoreLoader.loadScoreFromBytes(byteArray, this._api.settings));
-            return true;
-        }
-        if (data instanceof Uint8Array) {
-            success(ScoreLoader.loadScoreFromBytes(data, this._api.settings));
-            return true;
-        }
-        if (typeof data === 'string') {
-            ScoreLoader.loadScoreAsync(data, success, error, this._api.settings);
-            return true;
-        }
+        // if (data instanceof ArrayBuffer) {
+        //     let byteArray: Uint8Array = new Uint8Array(data);
+        //     success(ScoreLoader.loadScoreFromBytes(byteArray, this._api.settings));
+        //     return true;
+        // }
+        // if (data instanceof Uint8Array) {
+        //     success(ScoreLoader.loadScoreFromBytes(data, this._api.settings));
+        //     return true;
+        // }
+        // if (typeof data === 'string') {
+        //     ScoreLoader.loadScoreAsync(data, success, error, this._api.settings);
+        //     return true;
+        // }
         return false;
     }
 
     public loadSoundFont(data: unknown, append: boolean): boolean {
-        if (!this._api.player) {
-            return false;
-        }
+        // if (!this._api.player) {
+        //     return false;
+        // }
 
-        if (data instanceof ArrayBuffer) {
-            this._api.player.loadSoundFont(new Uint8Array(data), append);
-            return true;
-        }
-        if (data instanceof Uint8Array) {
-            this._api.player.loadSoundFont(data, append);
-            return true;
-        }
-        if (typeof data === 'string') {
-            (this._api as AlphaTabApi).loadSoundFontFromUrl(data, append);
-            return true;
-        }
+        // if (data instanceof ArrayBuffer) {
+        //     this._api.player.loadSoundFont(new Uint8Array(data), append);
+        //     return true;
+        // }
+        // if (data instanceof Uint8Array) {
+        //     this._api.player.loadSoundFont(data, append);
+        //     return true;
+        // }
+        // if (typeof data === 'string') {
+        //     (this._api as AlphaTabApi).loadSoundFontFromUrl(data, append);
+        //     return true;
+        // }
         return false;
     }
 
@@ -309,17 +314,17 @@ export class BrowserUiFacade implements IUiFacade<unknown> {
                 this._api.tex(this._contents, this._initialTrackIndexes ?? undefined);
                 this._initialTrackIndexes = null;
             } else if (this._file) {
-                ScoreLoader.loadScoreAsync(
-                    this._file,
-                    s => {
-                        this._api.renderScore(s, this._initialTrackIndexes ?? undefined);
-                        this._initialTrackIndexes = null;
-                    },
-                    e => {
-                        this._api.onError(e as Error);
-                    },
-                    this._api.settings
-                );
+                // ScoreLoader.loadScoreAsync(
+                //     this._file,
+                //     s => {
+                //         this._api.renderScore(s, this._initialTrackIndexes ?? undefined);
+                //         this._initialTrackIndexes = null;
+                //     },
+                //     e => {
+                //         this._api.onError(e as Error);
+                //     },
+                //     this._api.settings
+                // );
             }
         };
 
@@ -489,47 +494,47 @@ export class BrowserUiFacade implements IUiFacade<unknown> {
      * This method creates the player. It detects browser compatibility and
      * initializes a alphaSynth version for the client.
      */
-    public createWorkerPlayer(): IAlphaSynth | null {
-        let alphaSynthScriptFile: string | null = Environment.scriptFile;
-        if (!alphaSynthScriptFile) {
-            Logger.error('Player', 'alphaTab script file could not be detected, player cannot initialize');
-            return null;
-        }
+    public createWorkerPlayer(): any { // IAlphaSynth | null
+        // let alphaSynthScriptFile: string | null = Environment.scriptFile;
+        // if (!alphaSynthScriptFile) {
+        //     Logger.error('Player', 'alphaTab script file could not be detected, player cannot initialize');
+        //     return null;
+        // }
 
-        let player: AlphaSynthWebWorkerApi | null = null;
-        let supportsScriptProcessor: boolean = 'ScriptProcessorNode' in window;
+        // let player: AlphaSynthWebWorkerApi | null = null;
+        // let supportsScriptProcessor: boolean = 'ScriptProcessorNode' in window;
 
-        // Once https://github.com/webpack/webpack/issues/11543 is decided
-        // we can support audio worklets together with WebPack
-        let supportsAudioWorklets: boolean =
-            window.isSecureContext && 'AudioWorkletNode' in window && !Environment.isWebPackBundled;
+        // // Once https://github.com/webpack/webpack/issues/11543 is decided
+        // // we can support audio worklets together with WebPack
+        // let supportsAudioWorklets: boolean =
+        //     window.isSecureContext && 'AudioWorkletNode' in window && !Environment.isWebPackBundled;
 
-        if (supportsAudioWorklets) {
-            Logger.debug('Player', 'Will use webworkers for synthesizing and web audio api with worklets for playback');
-            player = new AlphaSynthWebWorkerApi(
-                new AlphaSynthAudioWorkletOutput(),
-                alphaSynthScriptFile,
-                this._api.settings.core.logLevel
-            );
-        } else if (supportsScriptProcessor) {
-            Logger.debug('Player', 'Will use webworkers for synthesizing and web audio api for playback');
-            player = new AlphaSynthWebWorkerApi(
-                new AlphaSynthScriptProcessorOutput(),
-                alphaSynthScriptFile,
-                this._api.settings.core.logLevel
-            );
-        }
+        // if (supportsAudioWorklets) {
+        //     Logger.debug('Player', 'Will use webworkers for synthesizing and web audio api with worklets for playback');
+        //     player = new AlphaSynthWebWorkerApi(
+        //         new AlphaSynthAudioWorkletOutput(),
+        //         alphaSynthScriptFile,
+        //         this._api.settings.core.logLevel
+        //     );
+        // } else if (supportsScriptProcessor) {
+        //     Logger.debug('Player', 'Will use webworkers for synthesizing and web audio api for playback');
+        //     player = new AlphaSynthWebWorkerApi(
+        //         new AlphaSynthScriptProcessorOutput(),
+        //         alphaSynthScriptFile,
+        //         this._api.settings.core.logLevel
+        //     );
+        // }
 
-        if (!player) {
-            Logger.error('Player', 'Player requires webworkers and web audio api, browser unsupported', null);
-        } else {
-            player.ready.on(() => {
-                if (this._api.settings.player.soundFont) {
-                    (this._api as AlphaTabApi).loadSoundFontFromUrl(this._api.settings.player.soundFont, false);
-                }
-            });
-        }
-        return player;
+        // if (!player) {
+        //     Logger.error('Player', 'Player requires webworkers and web audio api, browser unsupported', null);
+        // } else {
+        //     // player.ready.on(() => {
+        //     //     if (this._api.settings.player.soundFont) {
+        //     //         (this._api as AlphaTabApi).loadSoundFontFromUrl(this._api.settings.player.soundFont, false);
+        //     //     }
+        //     // });
+        // }
+        return null // player;
     }
 
     public beginInvoke(action: () => void): void {

@@ -19,7 +19,7 @@ export { FontStyle, Font } from '@src/model/Font';
 export { GraceType } from '@src/model/GraceType';
 export { HarmonicType } from '@src/model/HarmonicType';
 export { InstrumentArticulation } from '@src/model/InstrumentArticulation';
-export { JsonConverter } from '@src/model/JsonConverter';
+// export { JsonConverter } from '@src/model/JsonConverter';
 export { KeySignature } from '@src/model/KeySignature';
 export { KeySignatureType } from '@src/model/KeySignatureType';
 export { Lyrics } from '@src/model/Lyrics';

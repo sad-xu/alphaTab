@@ -19,9 +19,11 @@ export { AlphaTabApi } from '@src/platform/javascript/AlphaTabApi';
 
 export { VersionInfo as meta } from '@src/generated/VersionInfo';
 
-export * as importer from "./importer";
-export * as exporter from "./exporter";
-export * as midi from "./midi";
-export * as model from "./model";
-export * as rendering from "./rendering";
-export * as synth from "./synth";
+// export * as importer from "./importer";
+// export * as exporter from "./exporter";
+// export * as midi from "./midi";
+
+// export * as model from "./model";
+// export * as rendering from "./rendering";
+
+// export * as synth from "./synth";

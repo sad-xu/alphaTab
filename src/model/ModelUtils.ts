@@ -1,4 +1,4 @@
-import { GeneralMidi } from '@src/midi/GeneralMidi';
+// import { GeneralMidi } from '@src/midi/GeneralMidi';
 import { Beat } from '@src/model/Beat';
 import { Duration } from '@src/model/Duration';
 import { Fingers } from '@src/model/Fingers';
@@ -57,10 +57,15 @@ export class ModelUtils {
     }
 
     public static fingerToString(settings: Settings, beat: Beat, finger: Fingers, leftHand: boolean): string | null {
+
+        const isPiano = (program: number): boolean => {
+            return program <= 7 || program >= 16 && program <= 23;
+        }
+
         if (
             settings.notation.fingeringMode === FingeringMode.ScoreForcePiano ||
             settings.notation.fingeringMode === FingeringMode.SingleNoteEffectBandForcePiano ||
-            GeneralMidi.isPiano(beat.voice.bar.staff.track.playbackInfo.program)
+            isPiano(beat.voice.bar.staff.track.playbackInfo.program)
         ) {
             switch (finger) {
                 case Fingers.Unknown:
