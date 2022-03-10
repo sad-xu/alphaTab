@@ -121,6 +121,16 @@ export class AlphaTabApiBaseLite<TSettings> {
         });
     }
 
+    /**
+     * Destroys the alphaTab control and restores the initial state of the UI.
+     */
+     public destroy(): void {
+        this._isDestroyed = true;
+        this.uiFacade.destroy();
+        this.renderer.destroy();
+    }
+
+
     private _cursorWrapper: IContainer | null = null;
 
     /**
